@@ -6,17 +6,17 @@
 #
 # --
 
+import time
+
 # Phantom imports
 import phantom.app as phantom
-from phantom.base_connector import BaseConnector
+import requests
+import simplejson as json
 from phantom.action_result import ActionResult
+from phantom.base_connector import BaseConnector
 
 # THIS Connector imports
 from berryio_consts import *
-
-import requests
-import time
-import simplejson as json
 
 
 class BerryIOConnector(BaseConnector):
@@ -98,9 +98,10 @@ class BerryIOConnector(BaseConnector):
             #
             # self.debug_print('Entering while loop for rest')
             try:
-                r = request_func(self._base_url + self._api_uri + endpoint,  
+                r = request_func(self._base_url + self._api_uri + endpoint,
                                  # The complete url is made up of the base_url, the api url and the endpiont
-                                 # auth=(self._username, self._key),  # The authentication method, currently set to simple base authentication
+                                 # auth=(self._username, self._key),
+                                 # # The authentication method, currently set to simple base authentication
                                  # the data, converted to json string format if present, else just set to None
                                  data=json.dumps(data) if data else None,
                                  headers=headers,  # The headers to send in the HTTP call
@@ -123,7 +124,8 @@ class BerryIOConnector(BaseConnector):
                 time.sleep(SLEEP_SECS)
                 retry_count -= 1
 
-        # Handle any special HTTP error codes here, many devices return an HTTP error code like 204. The requests module treats these as error,
+        # Handle any special HTTP error codes here,
+        # many devices return an HTTP error code like 204. The requests module treats these as error,
         # so handle them here before anything else, uncomment the following lines in such cases
         # if (r.status_code >= 500): # these guys like 502/504 errors due to gateway failures, we can retry a few times.
         #    return (phantom.APP_SUCCESS, resp_json)
@@ -156,7 +158,8 @@ class BerryIOConnector(BaseConnector):
 
         # details = json.dumps(resp_json).replace('{', '').replace('}', '')
 
-        # return (action_result.set_status(phantom.APP_ERROR, ERR_FROM_SERVER.format(status=r.status_code, detail=details)), resp_json)
+        # return(action_result.set_status(phantom.APP_ERROR,
+        # ERR_FROM_SERVER.format(status=r.status_code, detail=details)), resp_json)
         return action_result.set_status(phantom.APP_ERROR, ERR_FROM_SERVER.format(status=r.status_code, detail=r.text)), r
 
     def _test_connectivity(self, param):
@@ -342,6 +345,7 @@ if __name__ == '__main__':
 
     # Imports
     import sys
+
     import pudb
 
     # Breakpoint at runtime
