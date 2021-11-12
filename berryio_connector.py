@@ -65,8 +65,11 @@ class BerryIOConnector(BaseConnector):
             'URI: {} - URL: {}'.format(self._api_uri, self._base_url))
         return phantom.APP_SUCCESS
 
-    def _make_rest_call(self, endpoint, action_result, headers={}, params=None, data=None, method="get", retry=True):
+    def _make_rest_call(self, endpoint, action_result, headers=None, params=None, data=None, method="get", retry=True):
         """ Function that makes the REST call to the device, generic function that can be called from various action handlers"""
+
+        if headers is None:
+            headers = {}
 
         # Get the config
         config = self.get_config()
