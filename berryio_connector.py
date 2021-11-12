@@ -61,7 +61,8 @@ class BerryIOConnector(BaseConnector):
         self._api_uri = BERRYIO_BASE_API
         if self._api_uri.endswith('/'):
             self._api_uri = self._api_uri[:-1]
-        self.save_progress('URI: {} - URL: {}'.format(self._api_uri, self._base_url))
+        self.save_progress(
+            'URI: {} - URL: {}'.format(self._api_uri, self._base_url))
         return phantom.APP_SUCCESS
 
     def _make_rest_call(self, endpoint, action_result, headers={}, params=None, data=None, method="get", retry=True):
@@ -81,7 +82,8 @@ class BerryIOConnector(BaseConnector):
 
         # handle the error in case the caller specified a non-existant method
         if not request_func:
-            action_result.set_status(phantom.APP_ERROR, ERR_API_UNSUPPORTED_METHOD, method=method)
+            action_result.set_status(
+                phantom.APP_ERROR, ERR_API_UNSUPPORTED_METHOD, method=method)
 
         # self.save_progress(USING_BASE_URL, base_url=self._base_url, api_uri=self._api_uri, endpoint=endpoint)
         # self.save_progress('Using {0} for authentication'.format(self._auth_method))
@@ -96,13 +98,18 @@ class BerryIOConnector(BaseConnector):
             #
             # self.debug_print('Entering while loop for rest')
             try:
-                r = request_func(self._base_url + self._api_uri + endpoint,  # The complete url is made up of the base_url, the api url and the endpiont
-                        # auth=(self._username, self._key),  # The authentication method, currently set to simple base authentication
-                        data=json.dumps(data) if data else None,  # the data, converted to json string format if present, else just set to None
-                        headers=headers,  # The headers to send in the HTTP call
-                        verify=config[phantom.APP_JSON_VERIFY],  # should cert verification be carried out?
-                        auth=(self._auth_username, self._auth_password),  # user and pass for basic auth
-                        params=params)  # uri parameters if any
+                r = request_func(self._base_url + self._api_uri + endpoint,  
+                                 # The complete url is made up of the base_url, the api url and the endpiont
+                                 # auth=(self._username, self._key),  # The authentication method, currently set to simple base authentication
+                                 # the data, converted to json string format if present, else just set to None
+                                 data=json.dumps(data) if data else None,
+                                 headers=headers,  # The headers to send in the HTTP call
+                                 # should cert verification be carried out?
+                                 verify=config[phantom.APP_JSON_VERIFY],
+                                 # user and pass for basic auth
+                                 auth=(self._auth_username,
+                                       self._auth_password),
+                                 params=params)  # uri parameters if any
             except Exception as e:
                 return action_result.set_status(phantom.APP_ERROR, ERR_SERVER_CONNECTION, e), None
 
@@ -123,7 +130,8 @@ class BerryIOConnector(BaseConnector):
         # Process errors
         # self.debug_print('Response returned: {}'.format(r.text))
         if phantom.is_fail(r.status_code) or r.text is False or BERRYIO_FAIL_ERROR in r.text:
-            self.debug_print('FAILURE: Found in the app response.\nResponse: {}'.format(r.text))
+            self.debug_print(
+                'FAILURE: Found in the app response.\nResponse: {}'.format(r.text))
             # if response:
             #     action_result.set_summary({'error' : r.text})
             # self.debug_print(action_result.get_message())
@@ -133,7 +141,8 @@ class BerryIOConnector(BaseConnector):
 
         if r.text:
             if BERRYIO_INPUT_INVALID.lower() in r.text.lower() or BERRYIO_NO_RESULTS.lower() in r.text.lower():
-                self.debug_print('FAILURE: Found in the app response.\nResponse: {}'.format(r.text))
+                self.debug_print(
+                    'FAILURE: Found in the app response.\nResponse: {}'.format(r.text))
                 # action_result.set_summary({'error' : r.text})
                 return phantom.APP_SUCCESS, ('error: ' + r)
         #
@@ -163,14 +172,16 @@ class BerryIOConnector(BaseConnector):
         endpoint = BERRYIO_VERSION
 
         # Progress
-        self.save_progress(USING_BASE_URL.format(base_url=self._base_url, api_uri=self._api_uri, endpoint=endpoint))
+        self.save_progress(USING_BASE_URL.format(
+            base_url=self._base_url, api_uri=self._api_uri, endpoint=endpoint))
 
         # Connectivity
         self.save_progress(phantom.APP_PROG_CONNECTING_TO_ELLIPSES, self._host)
 
         # Make the rest call, note that if we try for cached and its not there, it will automatically go to start a new analysis.
         # unless specified start a new as above.
-        ret_val, response = self._make_rest_call(endpoint, action_result, params='', retry=False)
+        ret_val, response = self._make_rest_call(
+            endpoint, action_result, params='', retry=False)
         self.debug_print('Ret_val: {}'.format(ret_val))
         """
         OK: V1.15.0,2016-11-17
@@ -182,7 +193,8 @@ class BerryIOConnector(BaseConnector):
                 self.save_progress(SUCC_CONNECTIVITY_TEST)
                 return self.set_status(phantom.APP_SUCCESS)
             else:
-                status_message = 'Connection failed. HTTP status_code: {}, reason:\n\n {}'.format(response.status_code, response.text)
+                status_message = 'Connection failed. HTTP status_code: {}, reason:\n\n {}'.format(
+                    response.status_code, response.text)
                 self.save_progress(status_message)
                 self.save_progress(ERR_CONNECTIVITY_TEST)
                 return self.set_status(phantom.APP_ERROR)
@@ -204,14 +216,16 @@ class BerryIOConnector(BaseConnector):
         endpoint = BERRYIO_GPIO_STATUS
 
         # Progress
-        self.save_progress(USING_BASE_URL.format(base_url=self._base_url, api_uri=self._api_uri, endpoint=endpoint))
+        self.save_progress(USING_BASE_URL.format(
+            base_url=self._base_url, api_uri=self._api_uri, endpoint=endpoint))
 
         # Connectivity
         self.save_progress(phantom.APP_PROG_CONNECTING_TO_ELLIPSES, self._host)
 
         # Make the rest call, note that if we try for cached and its not there, it will automatically go to start a new analysis.
         # unless specified start a new as above.
-        ret_val, response = self._make_rest_call(endpoint, action_result, params='', retry=True)
+        ret_val, response = self._make_rest_call(
+            endpoint, action_result, params='', retry=True)
         self.debug_print('Ret_val: {}'.format(ret_val))
         """
         OK: 2,not_exported,not_exported 3,not_exported,
@@ -229,12 +243,13 @@ class BerryIOConnector(BaseConnector):
         """
         if ret_val:
             if response.text.strip().lower().startswith('ok'):
-                response_data = { 'raw': response.text }
+                response_data = {'raw': response.text}
                 gpio = []
                 for line in (response.text.strip().split('\n')):
                     if "," in line:
                         linesp = line.strip().split(',')
-                        gpio.append({ 'pin': linesp[0], 'mode': linesp[1], 'value': linesp[2]})
+                        gpio.append(
+                            {'pin': linesp[0], 'mode': linesp[1], 'value': linesp[2]})
                 response_data['gpio'] = gpio
                 # Set the summary and response data
                 action_result.add_data(response_data)
@@ -262,24 +277,27 @@ class BerryIOConnector(BaseConnector):
         if param.get('mode', None):
             endpoint = BERRYIO_SET_MODE + pin + '/' + param.get('mode', '')
         elif param.get('value', None) is not None:
-            endpoint = BERRYIO_SET_VALUE + pin + '/' + str(param.get('value', ''))
+            endpoint = BERRYIO_SET_VALUE + pin + \
+                '/' + str(param.get('value', ''))
 
         # Progress
-        self.save_progress(USING_BASE_URL.format(base_url=self._base_url, api_uri=self._api_uri, endpoint=endpoint))
+        self.save_progress(USING_BASE_URL.format(
+            base_url=self._base_url, api_uri=self._api_uri, endpoint=endpoint))
 
         # Connectivity
         self.save_progress(phantom.APP_PROG_CONNECTING_TO_ELLIPSES, self._host)
 
         # Make the rest call, note that if we try for cached and its not there, it will automatically go to start a new analysis.
         # unless specified start a new as above.
-        ret_val, response = self._make_rest_call(endpoint, action_result, params='', retry=True)
+        ret_val, response = self._make_rest_call(
+            endpoint, action_result, params='', retry=True)
         self.debug_print('Ret_val: {}'.format(ret_val))
         """
         OK:
         """
         if ret_val:
             if response.text.strip().lower().startswith('ok'):
-                response_data = { 'raw': response.text }
+                response_data = {'raw': response.text}
                 # Set the summary and response data
                 action_result.add_data(response_data)
                 # action_result.set_summary({ 'total_hops': len(response_data)})
