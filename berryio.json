@@ -6,7 +6,7 @@
     "type": "information",
     "publisher": "Splunk Community",
     "main_module": "berryio_connector.py",
-    "app_version": "2.0.2",
+    "app_version": "2.0.3",
     "utctime_updated": "2021-11-16T07:26:00.000000Z",
     "package_name": "phantom_berryio",
     "product_vendor": "Daniel Bull",
