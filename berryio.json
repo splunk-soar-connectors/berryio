@@ -5,15 +5,14 @@
     "description": "This app supports actions for APIs on the BerryIO project for the Raspberry Pi, such as GPIO status, get and set",
     "type": "information",
     "publisher": "Splunk Community",
-    "main_module": "berryio_connector.py",
-    "app_version": "2.0.2",
+    "main_module": "berryio_connector.pyc",
+    "app_version": "1.0.10",
     "utctime_updated": "2021-11-16T07:26:00.000000Z",
     "package_name": "phantom_berryio",
     "product_vendor": "Daniel Bull",
     "product_name": "BerryIO",
     "product_version_regex": ".*",
     "min_phantom_version": "4.10.0.40961",
-    "python_version": "3",
     "latest_tested_versions": [
         "BerryIO v2.1.2"
     ],
