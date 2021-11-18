@@ -11,6 +11,7 @@
     "package_name": "phantom_berryio",
     "product_vendor": "Daniel Bull",
     "product_name": "BerryIO",
+    "python_version": "2.7",
     "product_version_regex": ".*",
     "min_phantom_version": "4.10.0.40961",
     "latest_tested_versions": [
